@@ -1,22 +1,12 @@
-const {Client} = require("@googlemaps/google-maps-services-js");
-const client = new Client({});
-const dotenv = require('dotenv');
+const express = require('express')
+const app = express()
+const cors = require('cors');
+const maps = require('./maps');
+const port = 3000
 
-dotenv.config();
+app.use(cors());
+app.use('/maps',maps);
 
-client
-  .elevation({
-    params: {
-      locations: [{ lat: 45, lng: -110 }],
-      key: process.env.API_KEY,
-    },
-    timeout: 1000, // milliseconds
-  })
-  .then((r) => {
-    console.log(r.data.results[0].elevation);
-  })
-  .catch((e) => {
-    console.log(e.response.data.error_message);
-  });
-
-console.log('hello world');
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
